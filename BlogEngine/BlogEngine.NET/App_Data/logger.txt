@@ -1,0 +1,6 @@
+*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+Date: 12/22/2016 12:39:35 PM
+Installed package SimpleBlog by admin
+*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+Date: 12/22/2016 1:03:46 PM
+Error sending email in SendMailMessage:  Failure sending mail. The remote name could not be resolved: 'mail.example.com'
