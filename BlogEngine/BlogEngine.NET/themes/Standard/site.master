@@ -1,0 +1,90 @@
+﻿<%@ Master Language="C#" AutoEventWireup="true" CodeFile="site.master.cs" Inherits="StandardSite" %>
+<%@ Import Namespace="BlogEngine.Core" %>
+<%@ Import Namespace="System.Linq" %>
+<!DOCTYPE html>
+<html lang="en">
+<head runat="server">
+    <link href="include/core.css" rel="stylesheet" />
+    <link href="include/styles.min.css" rel="stylesheet" />
+    <asp:ContentPlaceHolder ID="HeadContent" runat="server"></asp:ContentPlaceHolder>
+    <link rel="shortcut icon" href="~/pics/blogengine.ico" type="image/x-icon" />
+    <link href="~/editors/tiny_mce_3_5_8/plugins/syntaxhighlighter/styles/shCore.css" rel="stylesheet" type="text/css" />
+    <link href="~/editors/tiny_mce_3_5_8/plugins/syntaxhighlighter/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+    <script type="text/javascript" src="<%# ShRoot %>scripts/XRegExp.js"></script>
+    <script type="text/javascript" src="<%# ShRoot %>scripts/shCore.js"></script>
+    <script type="text/javascript" src="<%# ShRoot %>scripts/shAutoloader.js"></script>
+    <script type="text/javascript" src="<%# ShRoot %>shActivator.js"></script>
+</head>
+<body class="<%=Resources.labels.LangDirection %>">
+    <form runat="Server" class="LayoutPage">
+
+        <!-- Header -->
+        <header class="Header">
+            <nav class="TopBar">
+                <div class="Container ClearFix">
+                    <ul class="Left NavBar">
+                        <li class="Home Left"><a href="<%=Utils.AbsoluteWebRoot %>" rel="home"><span><%=Resources.labels.home %></span></a></li>
+                        <li class="Left"><a href="<%=Utils.AbsoluteWebRoot %>archive<%= BlogEngine.Core.BlogConfig.FileExtension %>"><%=Resources.labels.archive %></a></li>
+                        <li class="Left"><a href="<%=Utils.AbsoluteWebRoot %>contact<%= BlogEngine.Core.BlogConfig.FileExtension %>"><%=Resources.labels.contact %></a></li>
+                        <% if (Utils.IsMobile) { %> <li class="Left"> <blog:MobileThemeSwitch ID="MobileThemeSwitch1" runat="server" /></li> <% } %>
+                        <%foreach (BlogEngine.Core.Page parentPage in BlogEngine.Core.Page.Pages.Where(p => !p.HasParentPage && p.IsPublished && p.ShowInList)) { %><li class="Left Page-Link"><a href="<%=parentPage.RelativeLink %>" title="<%=parentPage.Title%>"><%=parentPage.Title%></a> <%if (parentPage.HasChildPages) { %> <ul class="Sub-Page-Links"> <%foreach (BlogEngine.Core.Page childPage in BlogEngine.Core.Page.Pages.Where(p => p.Parent == parentPage.Id && p.IsPublished)) { %> <li class="Left"><a href="<%=childPage.RelativeLink %>" title="<%=childPage.Title %>"><%=childPage.Title %></a></li> <% } %> </ul> <% } %></li> <% } %>
+                    </ul>
+                    <div class=" SubscribeButton Right">
+                        <a href="<%=Utils.FeedUrl %>" title="<%=Resources.labels.subscribe %>"><span><%=Resources.labels.subscribe %></span></a>
+                    </div>
+                    <script>$(".NavBar li:has(ul)").addClass("HasChild");</script>
+                </div>
+            </nav>
+            <div class="BlogTitle">
+                <div class="Container ClearFix">
+                    <h1 class="Title">
+                        <a href="<%=Utils.AbsoluteWebRoot %>"><%=BlogSettings.Instance.Name %></a>
+                    </h1>
+                    <span class="Desc"><%=BlogSettings.Instance.Description %></span>
+                </div>
+            </div>
+        </header>
+        <!-- /Header -->
+
+        <!-- PageWrapper -->
+        <section class="Container" id="PageWrapper">
+            <section class="Left Content">
+                <blog:SearchOnSearch ID="SearchOnSearch1" runat="server" MaxResults="3" Headline="You searched for" Text="Here are some results for the search term on this website" />
+                <asp:ContentPlaceHolder ID="cphBody" runat="server" />
+            </section>
+            <aside class="Right Sidebar">
+                <blog:WidgetZone ID="WidgetZone1" runat="server" ZoneName="be_WIDGET_ZONE" />
+            </aside>
+        </section>
+        <!-- /PageWrapper -->
+
+        <!-- Footer -->
+        <footer class="Footer">
+            <div class="Container">
+                <nav class="NavBarFooter">
+                    <ul class="clearFix">
+                        <li class="Home"><a href="<%=Utils.AbsoluteWebRoot %>" rel="home"><span><%=Resources.labels.home %></span></a></li>
+                        <li>|</li>
+                        <li><a href="<%=Utils.AbsoluteWebRoot %>archive<%= BlogEngine.Core.BlogConfig.FileExtension %>"><%=Resources.labels.archive %></a></li>
+                        <li>|</li>
+                        <li><a href="<%=Utils.AbsoluteWebRoot %>contact<%= BlogEngine.Core.BlogConfig.FileExtension %>"><%=Resources.labels.contact %></a></li>
+                        <li>|</li>
+                        <li><a href="<%=Utils.FeedUrl %>" class="feed"><%=Resources.labels.subscribe %></a></li>
+                        <li>|</li>
+                        <li><a href="javascript:void(BlogEngine.filterByAPML())" class="apmlfilter"><%=Resources.labels.filterByApml %></a></li>
+                        <li>|</li>
+                        <li><a runat="server" id="aLogin"></a></li>
+                    </ul>
+                </nav>
+                <div class="License">
+                    <p class="ltr">
+                        Copyright &copy; <%=DateTime.Now.Year %> - Powered by <a href="http://dotnetblogengine.net" target="_blank">BlogEngine.NET</a> <%=BlogSettings.Instance.Version() %> - Theme by <a href="http://seyfolahi.net/" title="Web Designer - UI/UX" target="_blank">Farzin Seyfolahi</a>
+                    </p>
+                </div>
+            </div>
+        </footer>
+        <!-- /Footer -->
+
+    </form>
+</body>
+</html>
